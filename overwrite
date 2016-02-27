@@ -1,0 +1,6 @@
+git filter-branch -f --env-filter \
+    'if [ $GIT_COMMIT = 6ae281301bfada1a6e29dd95bb02af6c4442a56f ]
+     then
+         export GIT_AUTHOR_DATE="Sat Feb 27 19:01:08 2016 +0000"
+         export GIT_COMMITTER_DATE="Sat Feb 27 19:01:08 2016 +0000"
+     fi'
