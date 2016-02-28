@@ -19,6 +19,7 @@ import static com.github.dreamhead.moco.Moco.uri;
 import static com.github.dreamhead.moco.Moco.with;
 import static java.nio.charset.Charset.defaultCharset;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static org.apache.commons.lang3.CharUtils.isAsciiAlphaUpper;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
 import static org.apache.commons.lang3.StringUtils.replace;
@@ -26,7 +27,7 @@ import static org.apache.http.HttpHeaders.CONTENT_TYPE;
 import static org.apache.http.entity.ContentType.APPLICATION_JSON;
 
 public class ProductProviderMocks {
-    private static final int DESCRIPTION_LEN = 200;
+    private static final int DESCRIPTION_LEN = 500;
     private final static String OFFER_URL = "http://www.google.com";
     private final static String DESCRIPTIONS = readRandomFile();
 
@@ -91,7 +92,7 @@ public class ProductProviderMocks {
     }
 
     private static String productRecord() {
-        String ccName = "CCard " + randomAlphabetic(4);
+        String ccName = "Card " + randomAlphabetic(4);
         return replace("{ 'name':'" + ccName + "',\n" +
                 "  'offer_url':'" + OFFER_URL + "', \n" +
                 "  'desc':'" + randomText() + "', \n" +
@@ -109,6 +110,16 @@ public class ProductProviderMocks {
 
     private static String randomText() {
         int startIx = nextInt(0, DESCRIPTIONS.length() - DESCRIPTION_LEN);
-        return DESCRIPTIONS.substring(startIx, startIx + DESCRIPTION_LEN);
+        int endIx = startIx + DESCRIPTION_LEN;
+
+        while (!isAsciiAlphaUpper(DESCRIPTIONS.charAt(startIx))) {
+            startIx++;
+            endIx++;
+            if (endIx >= DESCRIPTIONS.length()) {
+                startIx = 0;
+                endIx = DESCRIPTION_LEN;
+            }
+        }
+        return DESCRIPTIONS.substring(startIx, endIx);
     }
 }
