@@ -4,7 +4,7 @@ import org.apache.commons.math3.distribution.LogNormalDistribution;
 import org.apache.commons.math3.distribution.RealDistribution;
 
 public class RandomScoreGenerator {
-    private RealDistribution distribution = new LogNormalDistribution(1.0, 2.0);
+    private RealDistribution distribution = new LogNormalDistribution(1.3, 1.1);
 
     public int nextScore() {
         double value = distribution.sample();
