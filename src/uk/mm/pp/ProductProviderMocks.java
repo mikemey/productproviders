@@ -5,6 +5,7 @@ import com.github.dreamhead.moco.Moco;
 import com.github.dreamhead.moco.Runner;
 import com.google.common.base.Joiner;
 import com.google.common.io.Files;
+import org.apache.commons.math3.distribution.LogNormalDistribution;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,6 +31,8 @@ public class ProductProviderMocks {
     private static final int DESCRIPTION_LEN = 500;
     private final static String OFFER_URL = "http://www.google.com";
     private final static String DESCRIPTIONS = readRandomFile();
+    private final static RandomScoreGenerator randomGen = new RandomScoreGenerator();
+
 
     private final static String[] IMAGE_URLS = {
             "http://www.credit-card-logos.com/images/multiple_credit-card-logos-2/credit_card_logos_29.gif",
@@ -94,6 +97,7 @@ public class ProductProviderMocks {
     private static String productRecord() {
         String ccName = "Card " + randomAlphabetic(4);
         return replace("{ 'name':'" + ccName + "',\n" +
+                "  'score':" + randomGen.nextScore() + ", \n" +
                 "  'offer_url':'" + OFFER_URL + "', \n" +
                 "  'desc':'" + randomText() + "', \n" +
                 "  'img_url':'" + randomUrl() + "'\n" +
